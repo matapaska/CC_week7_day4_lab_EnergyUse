@@ -1,28 +1,33 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="html">
+<div>
+ <h1>Energy tracker</h1>
+ <energy-sources-list :energy-sources="energySources" ></energy-sources-list>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import EnergySourcesList from './components/EnergySourcesList.vue'
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  data(){
+    return{
+      energySources: [],
+      generationMix: []
+
+    }
+  },
+  mounted(){
+    fetch('https://api.carbonintensity.org.uk/generation')
+    .then(res => res.json())
+    .then (data => this.energySources = data)
+    .then (() => this.generationMix = this.energySources.data.generationmix)
+
+  },
+  components:{
+    "energy-sources-list": EnergySourcesList
   }
+
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="css" scoped>
 </style>
