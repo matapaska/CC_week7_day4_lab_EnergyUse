@@ -3,12 +3,15 @@
  <h1>Energy tracker</h1>
 <p>From {{this.dateFrom}} to {{this.dateTo}}</p>
  <energy-sources-list :generationMixForCharts="generationMixForCharts" width = 300px></energy-sources-list>
+ <date-form></date-form>
 
 </div>
 </template>
 
 <script>
+import {eventBus} from './main.js'
 import EnergySourcesList from './components/EnergySourcesList.vue'
+import DateForm from './components/DateForm.vue'
 export default {
   data(){
     return{
@@ -29,9 +32,18 @@ export default {
     .then(() => this.dateTo = this.energySources.data.to)
     .then(() => this.formatChartData())
 
+    eventBus.$on('date-submit', (startTime, endTime ) => {
+      // console.log(formData);
+      fetch(`https://api.carbonintensity.org.uk/intensity/stats/${startTime}/${endTime}`)
+        .then(res => res.json())
+        .then(data => console.log(data))
+    } )
+
+
   },
   components:{
-    "energy-sources-list": EnergySourcesList
+    "energy-sources-list": EnergySourcesList,
+    "date-form": DateForm
   },
 
   methods:{
@@ -42,10 +54,13 @@ export default {
       )
     }
 
+
+
   }
 
 }
 </script>
 
 <style lang="css" scoped>
+
 </style>

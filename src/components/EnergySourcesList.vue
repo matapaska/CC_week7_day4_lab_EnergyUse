@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-<GChart
+<GChart class="chart"
 type = "PieChart"
 :data="chartData"
 :options="chartOptions"
@@ -32,4 +32,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.chart {
+  width: 600;
+  height: 440
+}
 </style>
