@@ -1,7 +1,9 @@
 <template lang="html">
 <div>
  <h1>Energy tracker</h1>
+<p>From {{this.dateFrom}} to {{this.dateTo}}</p>
  <energy-sources-list :generationMixForCharts="generationMixForCharts" width = 300px></energy-sources-list>
+
 </div>
 </template>
 
@@ -12,7 +14,9 @@ export default {
     return{
       energySources: [],
       generationMix: [],
-      generationMixForCharts: [["Fuel", "Percentage"]]
+      generationMixForCharts: [["Fuel", "Percentage"]],
+      dateFrom: "",
+      dateTo: ""
 
     }
   },
@@ -21,6 +25,8 @@ export default {
     .then(res => res.json())
     .then (data => this.energySources = data)
     .then (() => this.generationMix = this.energySources.data.generationmix)
+    .then(() => this.dateFrom = this.energySources.data.from)
+    .then(() => this.dateTo = this.energySources.data.to)
     .then(() => this.formatChartData())
 
   },
