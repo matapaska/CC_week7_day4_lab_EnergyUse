@@ -1,7 +1,7 @@
 <template lang="html">
 <div>
  <h1>Energy tracker</h1>
- <energy-sources-list :energy-sources="energySources" ></energy-sources-list>
+ <energy-sources-list :generationMixForCharts="generationMixForCharts" width = 300px></energy-sources-list>
 </div>
 </template>
 
@@ -11,7 +11,8 @@ export default {
   data(){
     return{
       energySources: [],
-      generationMix: []
+      generationMix: [],
+      generationMixForCharts: [["Fuel", "Percentage"]]
 
     }
   },
@@ -20,10 +21,21 @@ export default {
     .then(res => res.json())
     .then (data => this.energySources = data)
     .then (() => this.generationMix = this.energySources.data.generationmix)
+    .then(() => this.formatChartData())
 
   },
   components:{
     "energy-sources-list": EnergySourcesList
+  },
+
+  methods:{
+    formatChartData: function () {
+      const fuel_pair = this.generationMix.forEach((object) => {
+          this.generationMixForCharts.push(Object.values(object))
+        }
+      )
+    }
+
   }
 
 }
